@@ -39,8 +39,8 @@ def adding_places_with_information(context, number):
             context.L.append(values)
 
 
-@then(u'User makes a csv file to save the information')
-def saves_company_details_to_csv(context):
+@then(u'User makes a csv file to save the information of company')
+def saves_places_details_to_csv(context):
     # Specify the CSV file path
     csv_file_path = f'{context.search}.csv'
 
