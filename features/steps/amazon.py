@@ -1,41 +1,45 @@
-from behave import *
+from behave import given, when, then
+from Ui_functions import send_input, click
+from Amazon_functions import select_items_extract_prices, total_cart_prices
 
-from features.pages.HomePage import HomePage  # imported home page module to perform actions in homepage
-from features.pages.ItemListPage import ItemLists  # imported Item list page module to perform item sorting
-from features.pages.SelectItemPage import SelectItem  # imported select item page module to select the items
-from features.pages.CheckOutPage import CheckOut  # imported check out page module to compare the value
+"""......................all the locators......................"""
 
-
-amount = []  # to store the price of each item
+locators = {
+    "SEARCH BOX": "xpath=//input[@type='text']",
+    "RATING": "xpath =//section[@aria-label='{} Stars & Up']",
+    "ITEMS LIST": "xpath=//span[@class='a-size-medium a-color-base a-text-normal']",
+    "ADD TO CART BTN": "xpath=//input[@name='submit.add-to-cart']",
+    "CART ICON": "xpath=//*[@class='nav-cart-icon nav-sprite']",
+    "TOTAL CART PRICE": "xpath=//*[@id='sc-subtotal-amount-buybox']/span",
+    "ITEM PRICE": "xpath=//span[@id='tp_price_block_total_price_ww']/descendant::span[@class='a-price-whole']"
+}
+""".............................................................."""
 
 
 @given(u'User is on the amazon website search for "{search_query}"')
-def step_impl(context, search_query):
-    home_page = HomePage(context.page)
-    home_page.send_input(search_query)  # item that user wants to search for
-    home_page.click()
+def searching_for_products(context, search_query):
+    context.page.goto("https://www.amazon.in/")
+    send_input(context.page, locators["SEARCH BOX"], search_query)  # user entered search item and searched for product
+    context.page.keyboard.press("Enter")
 
 
-@when(u'User filter by ratings')
-def filtering_the_items(context):
-    item_list = ItemLists(context.page)
-    item_list.click()
+@when(u'User filter by "{star}" ratings')
+def filtering_the_items(context, star):
+    # locators["RATING"] = f"xpath =//section[@aria-label='{star} Stars & Up']"
+    ratings = locators["RATING"].format(star)
+    click(context.page, ratings)
 
 
-@when(u'add top "{number}" laptops to the cart')
-def adding_multiple_items(context, number):
-    num = int(number)  # total number that user wants to buy
-    global amount
-    select_item = SelectItem(context.page)
-    x = select_item.item_select(num)
-    amount = x
+@when(u'add top "{num}" laptops to the cart')
+def adding_multiple_items(context, num):
+    context.amount = []  # to store the price of each item
+    x = select_items_extract_prices(context.page, locators["ITEMS LIST"], locators["ITEM PRICE"],locators["ADD TO CART BTN"], num)
+    context.amount = x
 
 
 @then(u'the total amount in the cart should match the laptop prices')
 def price_compare(context):
-    check_out = CheckOut(context.page)
-    cart_amt = check_out.price_compare()
-    laptop_amt = sum(amount)
+    click(context.page, locators["CART ICON"])
+    cart_amt = total_cart_prices(context.page, locators["TOTAL CART PRICE"])
+    laptop_amt = sum(context.amount)
     assert laptop_amt == cart_amt, "Amount not matching"  # comparing the price
-    print("Test case passed")
-
