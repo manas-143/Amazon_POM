@@ -23,4 +23,4 @@ jobs:
 
     - name: Run Playwright tests
       run: 
-        git update-index --chmod=+x ./Amazon_POM/features/behave amazon.feature
+        git update-index --chmod=+x ./Amazon_POM/features/amazon.feature
