@@ -20,7 +20,8 @@ jobs:
 
     - name: Install dependancies
       run:
-        pip install -r requirements.txt
+        pip install behave
+        pip install playwright
         wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.14.0/allure-commandline-2.14.0.zip
         unzip allure-commandline-2.14.0.zip
         sudo mv allure-2.14.0 /opt/allure
