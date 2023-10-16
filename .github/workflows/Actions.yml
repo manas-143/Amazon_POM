@@ -23,9 +23,9 @@ jobs:
         pip install behave
         pip install playwright
 
-    - name: Run Playwright tests
+    - name: Make files in features directory executable
       run: 
-        git update-index --chmod=+x ./features
+        find ./features -type f -exec chmod +x {} +
 
     - name: Run Allure Docker container to generate the report
       run: |
