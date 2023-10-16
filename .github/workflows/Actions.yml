@@ -20,12 +20,16 @@ jobs:
 
     - name: Install Behave and Playwright
       run: |
-        pip install behave
-        pip install playwright
+        pip install behave playwright
+
+    - name: Install Allure
+      run: |
+        sudo apt-add-repository "deb https://dl.bintray.com/qameta/generic/ all main"
+        sudo apt-get update
+        sudo apt-get install allure
 
     - name: Make files in features directory executable
-      run: 
-        find ./features -type f -exec chmod +x {} +
+      run: find ./features -type f -exec chmod +x {} +
 
     - name: Generate Allure report
       run: allure generate --clean -o allure-report
