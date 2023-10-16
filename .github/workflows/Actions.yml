@@ -27,9 +27,6 @@ jobs:
       run: 
         find ./features -type f -exec chmod +x {} +
 
-    - name: Run Playwright tests
-      run: git update-index --chmod=+x ./features
-
     - name: Generate Allure report
       run: allure generate --clean -o allure-report
 
