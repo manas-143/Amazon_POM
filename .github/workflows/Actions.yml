@@ -27,13 +27,11 @@ jobs:
       run: 
         find ./features -type f -exec chmod +x {} +
 
-    - name: Run Allure Docker container to generate the report
-      run: |
-        docker run -v ${PWD}:/allure-results \
-                   -v ${PWD}/allure-report:/allure-report \
-                   -e "ALLURE_RESULTS=/allure-results" \
-                   -e "ALLURE_REPORT=/allure-report" \
-                   allureframework/allure-docker:latest generate
+    - name: Run Playwright tests
+      run: git update-index --chmod=+x ./features
+
+    - name: Generate Allure report
+      run: allure generate --clean -o allure-report
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
