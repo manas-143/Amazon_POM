@@ -18,28 +18,25 @@ jobs:
       with:
         python-version: 3.x
 
-    - name: Install dependancies
-      run:
+    - name: Install Behave and Playwright
+      run: |
         pip install behave
         pip install playwright
-        wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.14.0/allure-commandline-2.14.0.zip
-        unzip allure-commandline-2.14.0.zip
-        sudo mv allure-2.14.0 /opt/allure
-        sudo ln -s /opt/allure/bin/allure /usr/bin/allure
 
     - name: Run Playwright tests
       run: 
-        git update-index --chmod=+x ./features/amazon.feature
+        git update-index --chmod=+x ./features
 
-    
-    - name: Genreate Allure report
-      run: 
-        allure generate --clean -o allure-report
+    - name: Run Allure Docker container to generate the report
+      run: |
+        docker run -v ${PWD}:/allure-results \
+                   -v ${PWD}/allure-report:/allure-report \
+                   -e "ALLURE_RESULTS=/allure-results" \
+                   -e "ALLURE_REPORT=/allure-report" \
+                   allureframework/allure-docker:latest generate
 
-    
-    - name: Deploy to Github Pages
-      uses: 
-        peaceiris/actions-gh-pages@v3
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./allure-report
