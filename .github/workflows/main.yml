@@ -40,7 +40,7 @@ jobs:
          pwd
      - name: Run behave tests
        if: always()
-       run: poetry run python run_behave.py
+       run: python run_behave.py
        continue-on-error: true
 
      - name: Run Load-test, scheduled on Sat
@@ -63,18 +63,18 @@ jobs:
 #          user_name: "Praveenkumar-95"
 #          commit_message: "Copy PDF baseline files"
 
-     - name: Copy Behave log files
-       uses: dmnemec/copy_file_to_another_repo_action@main
-       env:
-         API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
-       with:
-         source_file: "reports/behave.log"
-         destination_repo: ${{ github.repository }}
-         destination_branch: "behave-logs"
-         destination_folder: ${{ github.run_number }}
-         user_email: "manoj.patil@atlascopco.com"
-         user_name: "manojatlas"
-         commit_message: "Behave log file for build"
+     # - name: Copy Behave log files
+     #   uses: dmnemec/copy_file_to_another_repo_action@main
+     #   env:
+     #     API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+     #   with:
+     #     source_file: "reports/behave.log"
+     #     destination_repo: ${{ github.repository }}
+     #     destination_branch: "behave-logs"
+     #     destination_folder: ${{ github.run_number }}
+     #     user_email: "manoj.patil@atlascopco.com"
+     #     user_name: "manojatlas"
+     #     commit_message: "Behave log file for build"
 
      - name: Get Allure history
        uses: actions/checkout@v3
