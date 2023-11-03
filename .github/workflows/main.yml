@@ -47,13 +47,13 @@ jobs:
         sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
      - name: Run behave tests
        run: python runner_behave.py
-       continue-on-error: true
+  
 
      - name: Run Load-test
        run: |
          sed -i "s|TAGS=.*|TAGS=Load-test|" .env
          python runner_behave.py
-       continue-on-error: true
+
 
 #      - name: Copy PDF baseline files
 #        uses: dmnemec/copy_file_to_another_repo_action@main
@@ -83,7 +83,7 @@ jobs:
 
      - name: Get Allure history
        uses: actions/checkout@v3
-       continue-on-error: true
+  
        with:
          ref: gh-pages
          path: gh-pages
