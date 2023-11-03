@@ -52,7 +52,7 @@ jobs:
      - name: Run Load-test
        run: |
          sed -i "s|TAGS=.*|TAGS=Load-test|" .env
-         poetry run python run_behave.py
+         python runner_behave.py
        continue-on-error: true
 
 #      - name: Copy PDF baseline files
