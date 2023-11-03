@@ -110,7 +110,10 @@ jobs:
          PUBLISH_DIR: allure-history
      - name: Build Status
        run: |
-         if [ -f rerun_failing.features ]; then
-           echo "Build Failed due to test failure."
-           exit 1
-         fi
+             if [ -f rerun_failing.features ]; then
+             echo "Build Failed due to test failure."
+             exit 1
+             else
+             echo "Build Succeeded."
+             fi
+
