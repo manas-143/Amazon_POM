@@ -38,6 +38,13 @@ jobs:
      #     python3.10 -m pip install poetry
      #     python3.10 -m poetry install
      #     pwd
+     - name: Install Dependencies
+       run: |
+        pip install behave playwright allure-behave
+        wget https://github.com/allure-framework/allure2/releases/download/2.14.0/allure-2.14.0.zip
+        unzip allure-2.14.0.zip
+        sudo mv allure-2.14.0 /opt/allure
+        sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
      - name: Run behave tests
        if: always()
        run: python runner_behave.py
