@@ -6,7 +6,7 @@ name: CI
 on:
  # Triggers the workflow on push or pull request events but only for the "main" branch
  push:
-   branches: ["updatd"]
+   branches: -updated
  # schedule:
  #   - cron: "0 0 * * *"
  #   - cron: "0 3 * * 6"
