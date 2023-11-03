@@ -36,3 +36,5 @@ def extracting_information_of_company(page, name_selector, rating_selector, revi
         company_details_dict["Latitude and Longitude"] = None
 
     return company_details_dict
+
+
