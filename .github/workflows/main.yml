@@ -46,12 +46,10 @@ jobs:
         sudo mv allure-2.14.0 /opt/allure
         sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
      - name: Run behave tests
-       if: always()
        run: python runner_behave.py
        continue-on-error: true
 
-     - name: Run Load-test, scheduled on Sat
-       if: github.event.schedule == '0 3 * * 6'
+     - name: Run Load-test
        run: |
          sed -i "s|TAGS=.*|TAGS=Load-test|" .env
          poetry run python run_behave.py
@@ -85,7 +83,6 @@ jobs:
 
      - name: Get Allure history
        uses: actions/checkout@v3
-       if: always()
        continue-on-error: true
        with:
          ref: gh-pages
@@ -93,7 +90,6 @@ jobs:
 
      - name: Allure Report action from marketplace
        uses: simple-elf/allure-report-action@master
-       if: always()
        id: allure-report
        with:
          allure_results: reports
@@ -102,18 +98,10 @@ jobs:
          allure_history: allure-history
 
      - name: Deploy report to Github Pages
-       if: always()
        uses: peaceiris/actions-gh-pages@v2
        env:
          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          PUBLISH_BRANCH: gh-pages
          PUBLISH_DIR: allure-history
-     - name: Build Status
-       run: |
-             if [ -f rerun_failing.features ]; then
-             echo "Build Failed due to test failure."
-             exit 1
-             else
-             echo "Build Succeeded."
-             fi
+
 
